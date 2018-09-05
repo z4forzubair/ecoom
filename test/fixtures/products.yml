@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  flag: false
+  count: 1
+  cost: 9.99
+  price: 9.99
+  profit: 9.99
+
+two:
+  name: MyString
+  description: MyText
+  flag: false
+  count: 1
+  cost: 9.99
+  price: 9.99
+  profit: 9.99
