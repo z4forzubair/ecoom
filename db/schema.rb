@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_06_075536) do
+ActiveRecord::Schema.define(version: 2018_09_06_124917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "carts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "product_id"
+    t.index ["product_id"], name: "index_carts_on_product_id"
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
 
   create_table "images", force: :cascade do |t|
     t.binary "image"
@@ -54,9 +63,9 @@ ActiveRecord::Schema.define(version: 2018_09_06_075536) do
     t.decimal "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "discount"
     t.bigint "added_by_user_id"
     t.bigint "deleted_by_user_id"
-    t.integer "discount"
     t.index ["added_by_user_id"], name: "index_products_on_added_by_user_id"
     t.index ["deleted_by_user_id"], name: "index_products_on_deleted_by_user_id"
   end
@@ -92,10 +101,18 @@ ActiveRecord::Schema.define(version: 2018_09_06_075536) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.text "address"
+    t.string "contact_number"
+    t.string "user_role"
+    t.boolean "flag"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "carts", "products"
+  add_foreign_key "carts", "users"
   add_foreign_key "orders", "users"
   add_foreign_key "product_orders", "orders"
   add_foreign_key "product_orders", "products"
