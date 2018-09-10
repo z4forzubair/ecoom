@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
 #  belongs_to :user, required: true
   belongs_to :assigned_by_user, class_name: 'User', foreign_key: :added_by_user_id
-  belongs_to :deleted_by_user, class_name: 'User', foreign_key: :deleted_by_user_id
+  belongs_to :deleted_by_user, class_name: 'User', foreign_key: :deleted_by_user_id, optional: true
   #product_orders
   has_many :product_orders, dependent: :destroy
   has_many :orders, through: :product_orders

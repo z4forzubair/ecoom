@@ -19,5 +19,10 @@ class User < ApplicationRecord
   has_many :carts, dependent: :destroy
 
   #Custom Validations
+  validates :first_name, :last_name, :address, :contact_number, :user_role, :flag, :email,  presence: true
+  before_create :set_user_flag
 
+  def set_user_flag
+    flag = false    #this is not happening!!!
+  end
 end
