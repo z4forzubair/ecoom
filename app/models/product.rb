@@ -17,4 +17,8 @@ class Product < ApplicationRecord
   #Validations
   validates :name, :description, :count, :cost, :price, :flag, presence: true
   #foreign_key validation
+
+  def productflag?
+    flag == true
+  end
 end

@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   #Associations
-#  has_many :products
+ # has_many :products
   has_many :assigned_by_user, class_name: 'Product', foreign_key: :added_by_user_id
   has_many :deleted_by_user, class_name: 'Product', foreign_key: :deleted_by_user_id
   #orders
@@ -24,5 +24,18 @@ class User < ApplicationRecord
 
   def set_user_flag
     flag = false    #this is not happening!!!
+  end
+
+  def admin?
+    user_role == 'admin'
+  end
+  def moderator?
+    user_role == 'moderator'
+  end
+  def buyer?
+    user_role == 'buyer'
+  end
+  def userflag?
+    flag == true
   end
 end
