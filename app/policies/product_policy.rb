@@ -6,7 +6,7 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def index?
-    @product.productflag?
+    # @product.productflag?
   end
   def new?
     @user.userflag? && @user.admin? || @user.moderator?
@@ -22,6 +22,7 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def create?
+    # true
     @user.userflag? && @user.admin? || @user.moderator?
   end
 

@@ -20,20 +20,15 @@ class User < ApplicationRecord
 
   #Custom Validations
   validates :first_name, :last_name, :address, :contact_number, :user_role, :flag, :email,  presence: true
-  before_create :set_user_flag
-
-  def set_user_flag
-    flag = false    #this is not happening!!!
-  end
 
   def admin?
-    user_role == 'admin'
+    userflag? && user_role == 'admin'
   end
   def moderator?
-    user_role == 'moderator'
+    userflag? && user_role == 'moderator'
   end
   def buyer?
-    user_role == 'buyer'
+    userflag? && user_role == 'buyer'
   end
   def userflag?
     flag == true

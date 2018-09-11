@@ -60,7 +60,7 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
-    authorize @product
+    # authorize @product
     @product.destroy
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
@@ -81,6 +81,6 @@ class ProductsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
        # params.fetch(:product, {})
-      params.require(:product).permit(:name, :description, :price, :cost, :discount, :count, :added_by_user_id)
+      params.require(:product).permit(:name, :description, :price, :cost, :discount, :quantity, :added_by_user_id)
     end
 end

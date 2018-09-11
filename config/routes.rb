@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
  # root to: "home#index"
-  root 'welcome#index'
+  root 'products#index'
 
+  # resources
   resources :products
   resources :orders
+  # resources :carts
 end

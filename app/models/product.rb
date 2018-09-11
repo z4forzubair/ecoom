@@ -15,8 +15,16 @@ class Product < ApplicationRecord
   has_many :products, dependent: :destroy
 
   #Validations
-  validates :name, :description, :count, :cost, :price, :flag, presence: true
-  #foreign_key validation
+  validates :name, :quantity, :cost, :price, presence: true
+  after_validation :checkQuantity, on: [:create, :update, :save]
+
+  def checkQuantity
+    if quantity == 0
+      self.flag = false
+    else
+      self.flag = true
+    end
+  end
 
   def productflag?
     flag == true
