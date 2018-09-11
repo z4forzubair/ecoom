@@ -7,8 +7,9 @@ Rails.application.routes.draw do
  # root to: "home#index"
   root 'products#index'
 
+  get 'add_to_cart', action: 'create', controller: 'carts'
   # resources
   resources :products
   resources :orders
-  # resources :carts
+  resources :carts
 end
