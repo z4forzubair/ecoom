@@ -25,32 +25,45 @@ class CartsController < ApplicationController
   # POST /carts.json
   def create
     # @cart = Cart.new(cart_params)
-    @cart = Cart.new
-    product = Product.find(params[:product_id])
-    @cart.product_id = product.id
-    @cart.user_id = current_user.id
-    @cart.quantity = 1
+    @productTemp = Product.find(params[:product_id])
+    # crt=@cart.where("product_id=?", product.id).first
+    @cart=Cart.where(product_id: @productTemp.id, user_id: current_user.id).first
+    unless @cart.nil?
+      update
+    else
+      @cart = Cart.new
+      @cart.product_id = @productTemp.id
+      @cart.user_id = current_user.id
+      @cart.quantity = 1
 
-    # respond_to do |format|
-      if @cart.save
-        # format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
-        # format.json { render :show, status: :created, location: @cart }
-        # format.html { redirect_to controller: 'products', notice: 'Cart was successfully created.' }
-        # format.json { render :index, status: :created, location: 'products' }
-        # redirect_to action: 'index', controller: 'products'
-        redirect_to products_path, notice: 'Cart was added successfully'
-        # redirect_to :controller => 'products', :action => 'index'
-      else
-        render :new, notice: 'errors'
-        # format.html { render :new }
-        # format.json { render json: @cart.errors, status: :unprocessable_entity }
-      end
-    # end
+      # respond_to do |format|
+        if @cart.save
+          # format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
+          # format.json { render :show, status: :created, location: @cart }
+          # format.html { redirect_to controller: 'products', notice: 'Cart was successfully created.' }
+          # format.json { render :index, status: :created, location: 'products' }
+          # redirect_to action: 'index', controller: 'products'
+          redirect_to products_path, notice: 'Cart was added successfully'
+          # redirect_to :controller => 'products', :action => 'index'
+        else
+          render :new, notice: 'errors'
+          # format.html { render :new }
+          # format.json { render json: @cart.errors, status: :unprocessable_entity }
+        end
+      # end
+    end
   end
 
   # PATCH/PUT /carts/1
   # PATCH/PUT /carts/1.json
   def update
+    # @cart=Cart.find(@crt.id)
+    # @cart.product_id = @productTemp.id
+    # @cart.user_id = current_user.id
+    # currentQuantity=@cart.quantity
+    # @cart.quantity = currentQuantity+1
+    @cart.quantity = @cart.quantity + 1
+
     respond_to do |format|
       if @cart.update(cart_params)
         format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }

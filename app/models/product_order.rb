@@ -1,4 +1,4 @@
 class ProductOrder < ApplicationRecord
-  belongs_to :orders, required: true
-  belongs_to :products, required: true
+  belongs_to :order, required: true
+  belongs_to :product, required: true
 end

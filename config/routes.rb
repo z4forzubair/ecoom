@@ -7,7 +7,10 @@ Rails.application.routes.draw do
  # root to: "home#index"
   root 'products#index'
 
+  # create cart
   get 'add_to_cart', action: 'create', controller: 'carts'
+  # create order
+  get 'make_order', action: 'create', controller: 'orders'
   # resources
   resources :products
   resources :orders
