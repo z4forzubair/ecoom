@@ -4,7 +4,9 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    @products = Product.all
+    @products = Product.where(flag: true)
+    # @products = Product.all
+    authorize @products
   end
 
   # GET /products/1

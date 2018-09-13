@@ -15,7 +15,7 @@ class Product < ApplicationRecord
   has_many :products, dependent: :destroy
 
   #Validations
-  validates :name, :quantity, :cost, :price, presence: true
+  validates :name, :quantity, :cost, :price, :discount,:flag, presence: true
   after_validation :checkQuantity, on: [:create, :update, :save]
 
   def checkQuantity
@@ -27,6 +27,6 @@ class Product < ApplicationRecord
   end
 
   def productflag?
-    flag == true
+    self.flag == true
   end
 end

@@ -6,7 +6,7 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def index?
-    # @product.productflag?
+    true
   end
   def new?
     @user.userflag? && @user.admin? || @user.moderator?
@@ -14,7 +14,7 @@ class ProductPolicy < ApplicationPolicy
 
   def show?
     @product.productflag?
-    # authorizatin need in case the show view
+    # authorization need in case the show view
   end
 
   def edit?

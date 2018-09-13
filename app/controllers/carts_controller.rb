@@ -3,22 +3,25 @@ class CartsController < ApplicationController
 
   # GET /carts
   # GET /carts.json
-  def index
-    @carts = Cart.all
+  def index       # This will show the cart of a particular user
+    @carts = Cart.where(user_id: current_user.id)
   end
 
   # GET /carts/1
   # GET /carts/1.json
   def show
+    authorize @cart
   end
 
   # GET /carts/new
   def new
     @cart = Cart.new
+    # authorize @cart
   end
 
   # GET /carts/1/edit
   def edit
+    # authorize @cart
   end
 
   # POST /carts
@@ -35,6 +38,7 @@ class CartsController < ApplicationController
       @cart.product_id = @productTemp.id
       @cart.user_id = current_user.id
       @cart.quantity = 1
+      # authorize @cart
 
       # respond_to do |format|
         if @cart.save
@@ -56,28 +60,32 @@ class CartsController < ApplicationController
 
   # PATCH/PUT /carts/1
   # PATCH/PUT /carts/1.json
-  def update
+  def update    # to make validation here that quantity must be <= to that in that of the available products
     # @cart=Cart.find(@crt.id)
     # @cart.product_id = @productTemp.id
     # @cart.user_id = current_user.id
     # currentQuantity=@cart.quantity
     # @cart.quantity = currentQuantity+1
+    # authorize @cart
     @cart.quantity = @cart.quantity + 1
 
-    respond_to do |format|
+    # respond_to do |format|
       if @cart.update(cart_params)
-        format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
-        format.json { render :show, status: :ok, location: @cart }
+        # format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
+        # format.json { render :show, status: :ok, location: @cart }
+        redirect_to products_path, notice: 'Cart was added successfully'
       else
-        format.html { render :edit }
-        format.json { render json: @cart.errors, status: :unprocessable_entity }
+        # format.html { render :edit }
+        # format.json { render json: @cart.errors, status: :unprocessable_entity }
+        render :new, notice: 'errors'
       end
-    end
+    # end
   end
 
   # DELETE /carts/1
   # DELETE /carts/1.json
   def destroy
+    authorize @cart
     @cart.destroy
     respond_to do |format|
       format.html { redirect_to carts_url, notice: 'Cart was successfully destroyed.' }
