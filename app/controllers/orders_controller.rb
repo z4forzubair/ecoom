@@ -14,7 +14,11 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.new
+    # @order = Order.new
+    # @ordered = Cart.where(user_id: current_user.id, id:)
+    # @order = $carts
+    @order = Cart.where(user_id: current_user.id)
+
   end
 
   # GET /orders/1/edit
@@ -26,11 +30,12 @@ class OrdersController < ApplicationController
   def create
     # @order = Order.new(order_params)
     @order = Order.new
-    evaluate_order
+    evaluate_order    # it populates the order object
 
     # respond_to do |format|
       if @order.save
-        evaluate_product_order
+        evaluate_product_order    # it adds the enteries to product_order table
+        clear_cart
         # format.html { redirect_to @order, notice: 'Order was successfully created.' }
         # format.json { render :show, status: :created, location: @order }
         redirect_to products_path, notice: 'Order has been successfully placed'
@@ -81,7 +86,8 @@ class OrdersController < ApplicationController
     # Evaluate order attributes
     def evaluate_order
       @order.user_id=current_user.id
-      @cart=Cart.where(user_id: current_user.id)
+      # @cart=Cart.where(user_id: current_user.id)
+      @cart = $carts
       @order.no_of_products=@cart.count
       # finding total price and discount
       totalDiscount=0
@@ -112,6 +118,12 @@ class OrdersController < ApplicationController
         # puts @product_order.product.inspect
         # puts @product_order.order.inspect
         @product_order.save
+      end
+    end
+    # Clear Cart table for the current user
+    def clear_cart
+      @cart.each do |c|
+        c.destroy
       end
     end
 end

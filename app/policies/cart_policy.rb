@@ -1,14 +1,18 @@
 class CartPolicy < ApplicationPolicy
+
+  def user_logged_in?
+    !@user.nil?
+  end
   def index?
-    @user.userflag? && @user.buyer? || @user.moderator?
+    user_logged_in? && @user.userflag? && @user.buyer? || @user.moderator?
     # true
   end
   def create?
-    @user.userflag? && @user.buyer? || @user.moderator?
+    user_logged_in? && @user.userflag? && @user.buyer? || @user.moderator?
     # true
   end
   def update?
-    @user.userflag? && @user.buyer? || @user.moderator?
+    user_logged_in? && @user.userflag? && @user.buyer? || @user.moderator?
     # true
   end
   def show?
@@ -24,7 +28,7 @@ class CartPolicy < ApplicationPolicy
     # true
   end
   def destroy?
-    @user.userflag? && (@user.buyer? || @user.moderator?)
+    user_logged_in? && @user.userflag? && (@user.buyer? || @user.moderator?)
     # true
   end
 

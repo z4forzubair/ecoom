@@ -4,7 +4,8 @@ class CartsController < ApplicationController
   # GET /carts
   # GET /carts.json
   def index       # This will show the cart of a particular user
-    @carts = Cart.where(user_id: current_user.id)
+    $carts = Cart.where(user_id: current_user.id)
+    @carts=$carts
   end
 
   # GET /carts/1

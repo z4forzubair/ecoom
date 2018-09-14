@@ -1,17 +1,51 @@
-<%= form_with(model: order, local: true) do |form| %>
-  <% if order.errors.any? %>
+<%#= form_with(model: order, local: true) do |form| %>
+  <!-- <%# if order.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+      <h2><%#= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
 
       <ul>
-      <% order.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+      <%#order.errors.full_messages.each do |message| %>
+        <li><%#= message %></li>
+      <%# end %>
       </ul>
     </div>
-  <% end %>
+  <%# end %> -->
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+
+  <table width="120%", style="font-size:15px;line-height:19px;">
+    <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Discount</th>
+        <th>Total Price</th>
+        <th>Total Price</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+  <!-- To show price of each product, it's quantity, discount, and total amount here -->
+    <tbody>
+      <% @order.each do |cart| %>
+        <tr>
+          <td><%= cart.product.name %></td>
+          <td><%= cart.quantity %></td>
+          <td><%= cart.product.price %></td>
+          <td><%= totalPrice = cart.product.price * cart.product.quantity %></td>
+          <td><%= cart.product.discount %></td>
+          <td><%= total = totalPrice - cart.product.discount %></td>
+          <td><%= link_to 'Show', cart %></td>
+          <td><%= link_to 'Edit', edit_cart_path(cart) %></td>
+          <td><%= link_to 'Destroy', cart, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+<%= link_to '<button type="button">Place Order</button>'.html_safe, add_to_cart_path() %>
+  <!-- <div class="actions">
+    <%#= form.submit %>
+  </div> -->
+<%# end %>
