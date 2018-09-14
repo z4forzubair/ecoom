@@ -7,6 +7,7 @@ class ProductsController < ApplicationController
     @products = Product.where(flag: true)
     # @products = Product.all
     authorize @products
+    @falseproducts = Product.where(flag: false)
   end
 
   # GET /products/1
@@ -31,6 +32,7 @@ class ProductsController < ApplicationController
   # POST /products.json
   def create
     @product = Product.new(product_params)
+    @product.added_by_user_id=current_user.id
     authorize @product
 
     respond_to do |format|
@@ -48,6 +50,7 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1.json
   def update
     authorize @product
+    @product.added_by_user_id=current_user.id
     respond_to do |format|
       if @product.update(product_params)
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
@@ -62,7 +65,9 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
-    # authorize @product
+    authorize @product
+    # @product.deleted_by_user_id=current_user.id
+    # To set the deleted_by_user_id here when updating the flag only
     @product.destroy
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
@@ -83,6 +88,6 @@ class ProductsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
        # params.fetch(:product, {})
-      params.require(:product).permit(:name, :description, :price, :cost, :discount, :quantity, :added_by_user_id)
+      params.require(:product).permit(:id, :name, :description, :price, :cost, :discount, :quantity, :added_by_user_id, :deleted_by_user_id)
     end
 end

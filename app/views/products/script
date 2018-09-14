@@ -1,0 +1,8 @@
+
+<script>
+$(':input').bind('keypress keydown keyup change',function(){
+    var word = $(':input[id="keyword"]').val();
+    $('a[id="searchlink"]').attr("href",", add_to_cart_path?param1=" + word.toString());
+
+});
+</script>

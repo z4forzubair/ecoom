@@ -5,33 +5,37 @@ class ProductPolicy < ApplicationPolicy
     @product = product
   end
 
+  def user_logged_in?
+    !@user.nil?
+  end
   def index?
     true
   end
   def new?
-    @user.userflag? && @user.admin? || @user.moderator?
+    user_logged_in? && @user.userflag? && @user.admin? || @user.moderator?
   end
 
   def show?
-    @product.productflag?
+    (@product.productflag?) || (@user.userflag? || @user.admin? || @user.moderator?)
     # authorization need in case the show view
   end
 
   def edit?
-    @product.productflag? && @user.userflag? && @user.admin? || @user.moderator? # Any moderator can edit
+    # binding.pry
+    user_logged_in? && @user.userflag? && (@user.admin? || @user.moderator?) # Any moderator can edit
   end
 
   def create?
     # true
-    @user.userflag? && @user.admin? || @user.moderator?
+    user_logged_in? && @user.userflag? && @user.admin? || @user.moderator?
   end
 
   def update?
-    @product.productflag? && @user.userflag? && @user.admin? || @user.moderator? # Any moderator can update
+    user_logged_in? && @user.userflag? && @user.admin? || @user.moderator? # Any moderator can update
   end
 
   def destroy?
-    @product.productflag? && @user.userflag? && @user.admin? || @user.moderator?
+    user_logged_in? && @product.productflag? && @user.userflag? && @user.admin? || @user.moderator?
   end
 
 

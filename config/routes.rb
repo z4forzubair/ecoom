@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # Orders
   # create order
   get 'make_order', action: 'create', controller: 'orders'
-
+ 
   # resources
   resources :products
   resources :orders

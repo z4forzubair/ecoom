@@ -33,7 +33,7 @@ class OrdersController < ApplicationController
         evaluate_product_order
         # format.html { redirect_to @order, notice: 'Order was successfully created.' }
         # format.json { render :show, status: :created, location: @order }
-        redirect_to products_path, notice: 'Cart was added successfully'
+        redirect_to products_path, notice: 'Order has been successfully placed'
       else
         render :new, notice: 'errors'
         # format.html { render :new }

@@ -16,12 +16,12 @@ class CartsController < ApplicationController
   # GET /carts/new
   def new
     @cart = Cart.new
-    # authorize @cart
+    authorize @cart
   end
 
   # GET /carts/1/edit
   def edit
-    # authorize @cart
+    authorize @cart
   end
 
   # POST /carts
@@ -37,23 +37,34 @@ class CartsController < ApplicationController
       @cart = Cart.new
       @cart.product_id = @productTemp.id
       @cart.user_id = current_user.id
-      @cart.quantity = 1
-      # authorize @cart
+      @cart.quantity = 1  # A quantity
+      authorize @cart
+      # if @productTemp.quantity.nil?
+      #   redirect_to products_path, notice: "product quantity was nil"
+      # end
 
-      # respond_to do |format|
-        if @cart.save
-          # format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
-          # format.json { render :show, status: :created, location: @cart }
-          # format.html { redirect_to controller: 'products', notice: 'Cart was successfully created.' }
-          # format.json { render :index, status: :created, location: 'products' }
-          # redirect_to action: 'index', controller: 'products'
-          redirect_to products_path, notice: 'Cart was added successfully'
-          # redirect_to :controller => 'products', :action => 'index'
-        else
-          render :new, notice: 'errors'
-          # format.html { render :new }
-          # format.json { render json: @cart.errors, status: :unprocessable_entity }
-        end
+      # if @cart.quantity.nil?
+      #   redirect_to products_path, notice: "cart quantity was nil"
+      # end
+      # if @cart.quantity > @productTemp.quantity
+      #   redirect_to products_path, notice: "Available value of quantity is only #{@cart.quantity}"
+      # else
+
+        # respond_to do |format|
+          if @cart.save
+            # format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
+            # format.json { render :show, status: :created, location: @cart }
+            # format.html { redirect_to controller: 'products', notice: 'Cart was successfully created.' }
+            # format.json { render :index, status: :created, location: 'products' }
+            # redirect_to action: 'index', controller: 'products'
+            redirect_to products_path, notice: 'Cart was added successfully'
+            # redirect_to :controller => 'products', :action => 'index'
+          else
+            render :new, notice: 'errors'
+            # format.html { render :new }
+            # format.json { render json: @cart.errors, status: :unprocessable_entity }
+          end
+      # end
       # end
     end
   end
@@ -66,7 +77,7 @@ class CartsController < ApplicationController
     # @cart.user_id = current_user.id
     # currentQuantity=@cart.quantity
     # @cart.quantity = currentQuantity+1
-    # authorize @cart
+    authorize @cart
     @cart.quantity = @cart.quantity + 1
 
     # respond_to do |format|

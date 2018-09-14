@@ -5,6 +5,7 @@ ruby '2.5.1'
 #jquery_ujs
 gem 'jquery-rails'
 gem 'rails-ujs'
+gem 'pry'
 #bootstrap gem
 gem 'bootstrap-sass'
 #pundit gem

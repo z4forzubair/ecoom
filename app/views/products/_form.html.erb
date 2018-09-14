@@ -37,10 +37,10 @@
           <%= form.text_field :price %>
         </p>
 
-              <p>
-                <%= form.label :added_by_user %>
-                <%= form.text_field :added_by_user_id %>
-              </p>
+        <p>
+          <%= form.label :discount %>
+          <%= form.text_field :discount, value: 0 %>
+        </p>
 
   <div class="actions">
     <%= form.submit %>
