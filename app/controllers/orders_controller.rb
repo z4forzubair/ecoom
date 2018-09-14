@@ -5,24 +5,28 @@ class OrdersController < ApplicationController
   # GET /orders.json
   def index
     @orders = Order.all
+    authorize @orders
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
+    authorize @order
   end
 
   # GET /orders/new
   def new
-    # @order = Order.new
+    @auth_order = Order.new
+    authorize @auth_order
     # @ordered = Cart.where(user_id: current_user.id, id:)
-    # @order = $carts
-    @order = Cart.where(user_id: current_user.id)
-
+    @order = $carts
+    # @order = Cart.where(user_id: current_user.id)
+    # authorize @order    # it is calling carts#new    !!!!!!!!!!!!!
   end
 
   # GET /orders/1/edit
   def edit
+    authorize @order
   end
 
   # POST /orders
@@ -31,6 +35,7 @@ class OrdersController < ApplicationController
     # @order = Order.new(order_params)
     @order = Order.new
     evaluate_order    # it populates the order object
+    authorize @order
 
     # respond_to do |format|
       if @order.save
@@ -51,6 +56,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    authorize @order
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to @order, notice: 'Order was successfully updated.' }
@@ -65,6 +71,7 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
+    authorize @order
     @order.destroy
     respond_to do |format|
       format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }

@@ -12,9 +12,13 @@ class OrderPolicy < ApplicationPolicy
     false
   end
   def new?
-    user_logged_in? && @user.userflag? && @user.buyer? || @user.moderator?
+    true
+    # user_logged_in? && @user.userflag? && @user.buyer? || @user.moderator?
   end
   def edit?
+    false
+  end
+  def show?
     false
   end
   def destroy?

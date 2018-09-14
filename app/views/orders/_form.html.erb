@@ -20,7 +20,6 @@
         <th>Quantity</th>
         <th>Discount</th>
         <th>Total Price</th>
-        <th>Total Price</th>
         <th colspan="3"></th>
       </tr>
     </thead>
@@ -29,11 +28,10 @@
       <% @order.each do |cart| %>
         <tr>
           <td><%= cart.product.name %></td>
-          <td><%= cart.quantity %></td>
           <td><%= cart.product.price %></td>
-          <td><%= totalPrice = cart.product.price * cart.product.quantity %></td>
+          <td><%= cart.quantity %></td>
           <td><%= cart.product.discount %></td>
-          <td><%= total = totalPrice - cart.product.discount %></td>
+          <td><%= total = (cart.product.price * cart.product.quantity) - cart.product.discount %></td>
           <td><%= link_to 'Show', cart %></td>
           <td><%= link_to 'Edit', edit_cart_path(cart) %></td>
           <td><%= link_to 'Destroy', cart, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -44,7 +42,7 @@
 
   <br>
 
-<%= link_to '<button type="button">Place Order</button>'.html_safe, add_to_cart_path() %>
+<%= link_to '<button type="button">Place Order</button>'.html_safe, make_order_path %>
   <!-- <div class="actions">
     <%#= form.submit %>
   </div> -->
