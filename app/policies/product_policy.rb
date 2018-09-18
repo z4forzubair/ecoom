@@ -8,11 +8,13 @@ class ProductPolicy < ApplicationPolicy
   def user_logged_in?
     !@user.nil?
   end
+  
   def index?
     true
   end
+
   def new?
-    user_logged_in? && @user.userflag? && @user.admin? || @user.moderator?
+    user_logged_in? && @user.userflag? && (@user.admin? || @user.moderator?)
   end
 
   def show?
@@ -27,15 +29,15 @@ class ProductPolicy < ApplicationPolicy
 
   def create?
     # true
-    user_logged_in? && @user.userflag? && @user.admin? || @user.moderator?
+    user_logged_in? && @user.userflag? && (@user.admin? || @user.moderator?)
   end
 
   def update?
-    user_logged_in? && @user.userflag? && @user.admin? || @user.moderator? # Any moderator can update
+    user_logged_in? && @user.userflag? && (@user.admin? || @user.moderator?) # Any moderator can update
   end
 
   def destroy?
-    user_logged_in? && @product.productflag? && @user.userflag? && @user.admin? || @user.moderator?
+    user_logged_in? && @product.productflag? && @user.userflag? && (@user.admin? || @user.moderator?)
   end
 
 

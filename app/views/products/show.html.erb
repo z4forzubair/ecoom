@@ -1,4 +1,10 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
+
+<div class="container">
+  <div class="post-comments">
 <p>
   <strong>Name:</strong>
   <%= @product.name %>
@@ -24,5 +30,24 @@
   <%= @product.cost %>
 </p>
 
+<br>
+
+<%= form_tag({controller: "reviews", action: "create", id: ""}, method: "post") do %>
+    <!-- <%#= label_tag(:q, "Search for:") %> -->
+
+    <div class="form-group">
+      <%= label_tag(:your_comment)%>
+      <%#= class="form-control" rows="3" text_area_tag(:review)%>
+      <br>
+      <%= text_area_tag(:review)%>
+    </div>
+    <%= submit_tag("Send") %>
+
+<% end %>
+
+
+  </div>
+</div>
+<br>
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>

@@ -11,7 +11,7 @@
 
   <body>
     <%#= if  %>
-    <div style="color:blue;text-align: left;display: inline-block;margin-left: 300px;margin-right: auto;">
+    <div style="color:blue;text-align: left;display: inline-block;margin-left: 10px;margin-right: auto;">
     <% if user_signed_in? %>
       <%= link_to current_user.email, 'http://www.yahoomail.com' %>
       <%= link_to "Signout", destroy_user_session_path, method: :delete %>

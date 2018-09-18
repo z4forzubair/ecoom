@@ -3,9 +3,22 @@ class CartsController < ApplicationController
 
   # GET /carts
   # GET /carts.json
-  def index       # This will show the cart of a particular user
+  def index
+    @carts = Cart.new
+    authorize @carts, :user_logged_in?
     $carts = Cart.where(user_id: current_user.id)
+    $carts.each do |c|
+      if c.product.flag == false
+        c.destroy
+      else
+        if c.quantity > c.product.quantity
+          c.quantity = c.product.quantity
+          c.update(cart_params)
+        end
+      end
+    end
     @carts=$carts
+    authorize @carts
   end
 
   # GET /carts/1
@@ -28,70 +41,84 @@ class CartsController < ApplicationController
   # POST /carts
   # POST /carts.json
   def create
-    # @cart = Cart.new(cart_params)
-    @productTemp = Product.find(params[:product_id])
-    # crt=@cart.where("product_id=?", product.id).first
-    @cart=Cart.where(product_id: @productTemp.id, user_id: current_user.id).first
-    unless @cart.nil?
-      update
+    @cart = Cart.new
+    authorize @cart, :user_logged_in?
+    @quantity = params[:quantity]
+    @quantity = @quantity.to_i
+    if @quantity < 1
+      redirect_to products_path, notice: "Enter a valid number of items!"
     else
-      @cart = Cart.new
-      @cart.product_id = @productTemp.id
-      @cart.user_id = current_user.id
-      @cart.quantity = 1  # A quantity
-      authorize @cart
-      # if @productTemp.quantity.nil?
-      #   redirect_to products_path, notice: "product quantity was nil"
-      # end
+      @productTemp = Product.find(params[:product_id])
+      # crt=@cart.where("product_id=?", product.id).first
+      @cart=Cart.where(product_id: @productTemp.id, user_id: current_user.id).first
+      unless @cart.nil?
+        update
+      else
+        @cart = Cart.new
+        @cart.product_id = @productTemp.id
+        @cart.user_id = current_user.id
+        @cart.quantity = @quantity
+        authorize @cart
+        if @productTemp.quantity.nil? || @productTemp.flag == false
+          redirect_to products_path, notice: "Product not available"
+        elsif @cart.quantity.nil?
+          redirect_to products_path, notice: "Cart quantity cannot be added"
+        elsif @cart.quantity > @productTemp.quantity
+          redirect_to products_path, notice: "Available is only #{@productTemp.quantity}"
+        else
 
-      # if @cart.quantity.nil?
-      #   redirect_to products_path, notice: "cart quantity was nil"
-      # end
-      # if @cart.quantity > @productTemp.quantity
-      #   redirect_to products_path, notice: "Available value of quantity is only #{@cart.quantity}"
-      # else
-
-        # respond_to do |format|
-          if @cart.save
-            # format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
-            # format.json { render :show, status: :created, location: @cart }
-            # format.html { redirect_to controller: 'products', notice: 'Cart was successfully created.' }
-            # format.json { render :index, status: :created, location: 'products' }
-            # redirect_to action: 'index', controller: 'products'
-            redirect_to products_path, notice: 'Cart was added successfully'
-            # redirect_to :controller => 'products', :action => 'index'
-          else
-            render :new, notice: 'errors'
-            # format.html { render :new }
-            # format.json { render json: @cart.errors, status: :unprocessable_entity }
-          end
-      # end
-      # end
+          # respond_to do |format|
+            if @cart.save
+              # format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
+              # format.json { render :show, status: :created, location: @cart }
+              # format.html { redirect_to controller: 'products', notice: 'Cart was successfully created.' }
+              # format.json { render :index, status: :created, location: 'products' }
+              # redirect_to action: 'index', controller: 'products'
+              redirect_to products_path, notice: 'Cart was added successfully'
+              # redirect_to :controller => 'products', :action => 'index'
+            else
+              render :new, notice: 'errors'
+              # format.html { render :new }
+              # format.json { render json: @cart.errors, status: :unprocessable_entity }
+            end
+        end
+        # end
+      end
     end
   end
 
   # PATCH/PUT /carts/1
   # PATCH/PUT /carts/1.json
-  def update    # to make validation here that quantity must be <= to that in that of the available products
-    # @cart=Cart.find(@crt.id)
-    # @cart.product_id = @productTemp.id
-    # @cart.user_id = current_user.id
-    # currentQuantity=@cart.quantity
-    # @cart.quantity = currentQuantity+1
+  def update
     authorize @cart
-    @cart.quantity = @cart.quantity + 1
+    @old_quantity = @cart.quantity
+    @cart.quantity = @old_quantity + @quantity
 
-    # respond_to do |format|
+    if @old_quantity > @productTemp.quantity
+      @cart.quantity = @productTemp.quantity
       if @cart.update(cart_params)
         # format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
         # format.json { render :show, status: :ok, location: @cart }
-        redirect_to products_path, notice: 'Cart was added successfully'
+        redirect_to products_path, notice: "You cannot add more items, Quantity available is #{@cart.quantity}"
       else
         # format.html { render :edit }
         # format.json { render json: @cart.errors, status: :unprocessable_entity }
         render :new, notice: 'errors'
       end
-    # end
+    elsif @cart.quantity > @productTemp.quantity
+      redirect_to products_path, notice: "Product not available, you already have added #{@old_quantity} items. You can only add #{@productTemp.quantity - @old_quantity} items."
+    else
+    # respond_to do |format|
+      if @cart.update(cart_params)
+        # format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
+        # format.json { render :show, status: :ok, location: @cart }
+        redirect_to products_path, notice: "Cart updated successfully, new quantity available is #{@cart.quantity}"
+      else
+        # format.html { render :edit }
+        # format.json { render json: @cart.errors, status: :unprocessable_entity }
+        render :new, notice: 'errors'
+      end
+    end
   end
 
   # DELETE /carts/1

@@ -39,8 +39,9 @@ class OrdersController < ApplicationController
 
     # respond_to do |format|
       if @order.save
-        evaluate_product_order    # it adds the enteries to product_order table
-        clear_cart
+        evaluate_product_order_and_clear_cart    # it adds the enteries to product_order table
+        # reduce_product_quantity
+        # clear_cart
         # format.html { redirect_to @order, notice: 'Order was successfully created.' }
         # format.json { render :show, status: :created, location: @order }
         redirect_to products_path, notice: 'Order has been successfully placed'
@@ -109,7 +110,7 @@ class OrdersController < ApplicationController
       @order.total_bill = @order.total_amount - @order.total_discount
     end
     # Evaludate ProductOrder attributes
-    def evaluate_product_order      # To merge it with the upper function, i.e. to optimize
+    def evaluate_product_order_and_clear_cart      # To merge it with the upper function, i.e. to optimize
       # @product_order=ProductOrder.new
       # @product_order.order_id=@order.id
       # @product_order.product_id=@cart.product_id
@@ -121,10 +122,9 @@ class OrdersController < ApplicationController
         @product_order.product_id=c.product_id
         @product_order.quantity=c.quantity
         @product_order.discount=c.product.discount
-        # puts @product_order.inspect
-        # puts @product_order.product.inspect
-        # puts @product_order.order.inspect
         @product_order.save
+        # delete the cart entry
+        c.destroy
       end
     end
     # Clear Cart table for the current user

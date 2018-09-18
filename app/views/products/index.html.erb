@@ -11,7 +11,6 @@
       <th>Price</th>
       <!-- <th>Cost</th> -->
       <th>Discount</th>
-      <th>Flag</th>
       <th colspan="5"></th>
     </tr>
   </thead>
@@ -25,15 +24,16 @@
           <td><%= product.quantity %></td>
           <td><%= product.price %></td>
           <td><%= product.discount %></td>
-          <td><%= product.flag %></td>
           <td><%= link_to 'Show', product %></td>
           <td><%= link_to 'Edit', edit_product_path(product) %></td>
           <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <!-- <td><%#= text_field :quantity, value: 1%></td> -->
-          <!-- <td><%#= text_field value="1" name="fee" %></td> -->
-          <!-- <td><%#= text_field :search,:id=>'keyword' %></td> -->
-          <!-- <td><%#= link_to 'Add to Cart', :id => "searchlink" %></td> -->
-          <td><%= link_to 'Add to Cart', add_to_cart_path(:product_id => product.id) %></td>
+          
+          <%= form_tag({controller: "carts", action: "create"}, method: "post") do %>
+              <!-- <%#= label_tag(:q, "Search for:") %> -->
+              <td><%= number_field_tag(:quantity) %></td>
+              <td><%= hidden_field_tag 'product_id', product.id  %></td>
+              <td><%= submit_tag("Add to Cart") %></td>
+          <% end %>
 
         </tr>
       <%# end %>
@@ -43,6 +43,7 @@
 </table>
 
 <br>
+
 
 <%= link_to 'New Product', new_product_path %>
 <br>
