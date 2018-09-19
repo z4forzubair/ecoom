@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-  before_action :set_cart, only: [:show, :edit, :update, :destroy]
+  before_action :set_cart, only: %i[show edit update destroy]
 
   # GET /carts
   # GET /carts.json
@@ -41,7 +41,7 @@ class CartsController < ApplicationController
   # POST /carts
   # POST /carts.json
   def create
-    @cart = Cart.new
+    @cart = Cart.new(cart_params)
     authorize @cart, :user_logged_in?
     @quantity = params[:quantity]
     @quantity = @quantity.to_i
@@ -106,7 +106,7 @@ class CartsController < ApplicationController
         render :new, notice: 'errors'
       end
     elsif @cart.quantity > @productTemp.quantity
-      redirect_to products_path, notice: "Product not available, you already have added #{@old_quantity} items. You can only add #{@productTemp.quantity - @old_quantity} items."
+      redirect_to products_path, notice: "Product not available, you already have added #{@old_quantity} items. Only #{@productTemp.quantity - @old_quantity} more items are available."
     else
     # respond_to do |format|
       if @cart.update(cart_params)
@@ -141,6 +141,6 @@ class CartsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def cart_params
       params.fetch(:cart, {}) #it is a hash for avoiding null array
-      # params.require(:cart).permit(:user_id, :product_id, :quantity)
+      params.permit(:product_id, :quantity)
     end
 end

@@ -1,0 +1,7 @@
+ // Modification made in the if block only
+<% if @review.comment_id == nil %>
+ $('.append-div').append("<%= escape_javascript render :partial => 'review' %>");
+<% else %>
+ $(document).find(".comment-parent-<%= @comment.reply_id %>").find('#reply_of_comment').remove();
+ $(document).find(".comment-parent-<%= @comment.reply_id %>").find('.reply-add').html("<%= escape_javascript render :partial => 'comment-reply' %>");
+<% end %>

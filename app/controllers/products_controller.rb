@@ -1,13 +1,12 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: %i[show edit update destroy]
 
   # GET /products
   # GET /products.json
   def index
-    @products = Product.where(flag: true)
-    # @products = Product.all
+    @products = Product.flagged
     authorize @products
-    @falseproducts = Product.where(flag: false)
+    @falseproducts = Product.unflagged
   end
 
   # GET /products/1

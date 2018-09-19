@@ -8,6 +8,8 @@ class Review < ApplicationRecord
   #rating
   has_many :ratings, as: :rated
 
+  validates :revcontent, presence: true
+
   #Validations
   before_validation :one_level_nesting, on: [ :create, :update, :save]
 

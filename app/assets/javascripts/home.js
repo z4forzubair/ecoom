@@ -12,3 +12,28 @@ $('[data-toggle="collapse"]').on('click', function() {
     $parent.find('.glyphicon').not(currentIcon).removeClass('glyphicon-minus').addClass('glyphicon-plus');
 
 });
+
+function toggle_rev_div(id){
+  var divelement = document.getElementById(id);
+  if(divelement.style.display == 'none')
+    divelement.style.display = 'block';
+    else {
+      divelement.style.display = 'none';
+    }
+}
+
+
+$(document).ready(function() {
+    $('#add_review').on('click', function() {
+      $.ajax({
+        url: '/reviews/create',
+        data: {revcontent: $(this).data('revcontent'), product_id: $(this).data('product_id')},
+        action: 'POST',
+        dataType: 'HTML',
+        success: function(data) {
+        console.log(data)
+        // $('#bugs-show-area').html(data)
+      }
+    });
+  });
+});

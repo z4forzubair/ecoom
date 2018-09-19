@@ -22,15 +22,12 @@ class User < ApplicationRecord
   validates :first_name, :last_name, :address, :contact_number, :user_role, :flag, :email,  presence: true
 
   def admin?
-    userflag? && user_role == 'admin'
+    flag && user_role == 'admin'
   end
   def moderator?
-    userflag? && user_role == 'moderator'
+    flag && user_role == 'moderator'
   end
   def buyer?
-    userflag? && user_role == 'buyer'
-  end
-  def userflag?
-    flag == true
+    flag && user_role == 'buyer'
   end
 end

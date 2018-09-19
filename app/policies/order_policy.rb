@@ -6,14 +6,14 @@ class OrderPolicy < ApplicationPolicy
     false
   end
   def create?
-    user_logged_in? && @user.userflag? && (@user.buyer? || @user.moderator?)
+    user_logged_in? && @user.flag && (@user.buyer? || @user.moderator?)
   end
   def update?
     false
   end
   def new?
     # true
-    user_logged_in? && @user.userflag? && (@user.buyer? || @user.moderator?)
+    user_logged_in? && @user.flag && (@user.buyer? || @user.moderator?)
   end
   def edit?
     false

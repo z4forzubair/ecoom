@@ -21,9 +21,10 @@ class Product < ApplicationRecord
   validates :flag, inclusion: { in: [true, false] }   # to make this too after validation and function call
   validates :flag, exclusion: { in: [nil] }   # to make this too after validation and function call
 
-
-  def productflag?
-    self.flag == true
+  scope :flagged, -> { where(flag: true) }
+  scope :unflagged, -> { where(flag: false) }
+  def flagged?
+    flag == true
   end
 
   private
@@ -34,7 +35,6 @@ class Product < ApplicationRecord
     else
       self.flag = true
     end
-    puts 'entered flag function', self.flag
   end
   # def set_assigned_by_user
   #   self.added_by_user_id=current_user.id
