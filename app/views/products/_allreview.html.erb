@@ -1,0 +1,51 @@
+<div class = 'col-sm-4 col-md-4 append-div' >
+ <% @reviews.each do |comment| %>
+   <div class = 'container'  id='comment-parent' >
+       <div class = "card comment-parent-<%= comment.id %>">
+         <div class = 'card-body'>
+             <!-- <div class = 'row'> -->
+                 <!-- <div class = 'col-md-2'>
+                     <%#= image_tag('dummy-profile-img.jpg', size: "72x72", class: 'img img-rounded img-fluid') %>
+                 </div> -->
+                 <div class = 'col-md-10'>
+                     <p>
+                       <a class = 'float-left' ><strong><%= comment.user.name %></strong></a>
+                       <span class = 'float-right'><i class = 'text-warning fa fa-star'></i></span>
+                       <span class = 'float-right'><i class = 'text-warning fa fa-star'></i></span>
+                       <span class = 'float-right'><i class = 'text-warning fa fa-star'></i></span>
+                       <span class = 'float-right'><i class = 'text-warning fa fa-star'></i></span>
+                     </p>
+                     <!-- <div class = 'clearfix'></div>
+                     <p><%= comment.revcontent %></p>
+                     <%# if comment.comment_id.nil? %>
+                       <div id='reply-area'>
+                         <button class='show-reply'> Reply</button>
+                         <div class='reply-div'>
+                           <%#= render partial: 'comments/reply', locals: {comment_id: comment.id, bug_id: @bug.id} %>
+                         </div>
+                       </div> -->
+
+                    <%# end %>
+                 </div>
+             <!-- </div> -->
+             <!-- <div class = 'card card-inner reply-add'></div>
+             <%# if !comment.reply.nil? %>
+               <div class = 'card card-inner reply-add'>
+                     <div class = 'card-body'>
+                         <!-- <div class = 'row'>
+                           <!-- <div class = 'col-md-2'>
+                                 <%#= image_tag('dummy-profile-img.jpg', size: '72x72', class: 'img img-rounded img-fluid') %>
+                             </div> -->
+                             <!-- <div class = 'col-md-10' id="reply-parent-<%= comment.id %>">
+                                 <p><strong><%#= comment.reply.user.name %></strong></p>
+                                 <p><%#= comment.reply.comment_detail %></p>
+                             </div> -->
+                         <!-- </div> -->
+                     <!-- </div> -->
+                 <!-- </div> -->
+             <%# end %>
+         <!-- </div> -->
+     </div>
+   </div>
+ <% end %>
+</div>

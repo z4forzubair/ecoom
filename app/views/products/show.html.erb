@@ -54,11 +54,13 @@ Email  : manirujjamanakash@gmail.com
       <%= text_area_tag(:revcontent)%>
       <%= hidden_field_tag 'product_id', @product.id  %>
     </div>
-    <%= submit_tag("Send") %>
+    <%= submit_tag("Post") %>
 
 <% end %>
-<button onclick="toggle_rev_div('reviewsection');"> Click Here </button>
+<!-- <button onclick="toggle_rev_div('reviewsection');"> Click Here </button> -->
 <br>
+<div class = "append-div">
+</div>
 
 <!-- saving using ajax -->
 <!-- <textarea name="revcontent" id="revcontent" cols="20" rows="5"></textarea>
@@ -70,7 +72,7 @@ Email  : manirujjamanakash@gmail.com
 <br>
 
 
-
+<!--
 <div class="container" id="reviewsection">
 	<h2 class="text-center">Comments and Reviews</h2>
 
@@ -119,7 +121,7 @@ Email  : manirujjamanakash@gmail.com
 	    </div>
 	</div>
 </div>
-
+ -->
 
 
 <br>

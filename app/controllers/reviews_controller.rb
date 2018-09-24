@@ -31,18 +31,20 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     authorize @review, :user_logged_in?
     @review.user = current_user
-    @product = Product.find(params[:product_id])  # Not a good approach
+    # @product = Product.find(params[:product_id]) # Not a good approach
     authorize @review
-    # respond_to do |format|
-      if @review.save
+    if @review.save
+      respond_to do |format|
         # format.html { redirect_to @review, notice: 'Review was successfully created.' }
         # format.json { render :show, status: :created, location: @review }
-        redirect_to @product, notice: 'Review was added successfully'
-      else
-        render :new, notice: 'errors'
-        # format.html { render :new }
-        # format.json { render json: @review.errors, status: :unprocessable_entity }
+        # redirect_to @product, notice: 'Review was added successfully'
+        format.js
       end
+    else
+      render :new, notice: 'errors'
+      # format.html { render :new }
+      # format.json { render json: @review.errors, status: :unprocessable_entity }
+    end
     # end
   end
 
@@ -73,14 +75,16 @@ class ReviewsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_review
-      @review = Review.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def review_params
-      params.fetch(:review, {})
-      params  .permit(:revcontent, :product_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_review
+    @review = Review.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet,
+  # only allow the white list through.
+  def review_params
+    params.fetch(:review, {})
+    params.permit(:revcontent, :product_id, :comment_id)
+  end
 end

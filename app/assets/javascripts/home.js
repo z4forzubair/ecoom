@@ -13,7 +13,12 @@ $('[data-toggle="collapse"]').on('click', function() {
 
 });
 
-function toggle_rev_div(id){
+function toggle_rev_div(id, btnid){
+  hide_show_div(id);
+  hide_show_div(btnid);
+}
+
+function hide_show_div(id){
   var divelement = document.getElementById(id);
   if(divelement.style.display == 'none')
     divelement.style.display = 'block';
@@ -22,9 +27,14 @@ function toggle_rev_div(id){
     }
 }
 
+function clear_text(id){
+  var area_element = document.getElementById(id);
+  area_element.val('');
+}
 
 $(document).ready(function() {
     $('#add_review').on('click', function() {
+      alert('someting')
       $.ajax({
         url: '/reviews/create',
         data: {revcontent: $(this).data('revcontent'), product_id: $(this).data('product_id')},
@@ -32,6 +42,9 @@ $(document).ready(function() {
         dataType: 'HTML',
         success: function(data) {
         console.log(data)
+        console.log('its in console');
+        var area_element = document.getElementById('revcontent');
+        area_element.val('');
         // $('#bugs-show-area').html(data)
       }
     });

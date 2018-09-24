@@ -1,0 +1,14 @@
+<%= form_tag({controller: "reviews", action: "create"}, method: "post", remote: :true) do %>
+    <!-- <%#= label_tag(:q, "Search for:") %> -->
+
+    <div class="form-group">
+      <%= label_tag(:reply)%>
+      <!-- <%#= class="form-control" rows="3" text_area_tag(:review)%> -->
+      <br>
+      <%= text_area_tag(:revcontent)%>
+      <%= hidden_field_tag 'product_id', @review.product.id  %>
+      <%= hidden_field_tag 'comment_id', @review.id  %>
+    </div>
+    <%= submit_tag("Post")%>
+
+<% end %>
