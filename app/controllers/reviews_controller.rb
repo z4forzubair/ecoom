@@ -28,6 +28,8 @@ class ReviewsController < ApplicationController
   # POST /reviews
   # POST /reviews.json
   def create
+    @review = Review.new
+    authorize @review
     review = Review.create(review_params)
 
     # ActionCable.server.broadcast 'review',
@@ -40,7 +42,7 @@ class ReviewsController < ApplicationController
     # # @product = Product.find(params[:product_id]) # Not a good approach
     # # authorize @review
     # # review = @review
-    # if review.save
+    if review.save
     #   # respond_to do |_format|
     #   # format.html { redirect_to @review, notice: 'Review was successfully created.' }
     #   # format.json { render :show, status: :created, location: @review }
@@ -54,11 +56,20 @@ class ReviewsController < ApplicationController
     #   #                                locals: { review: @review }
     #   #                              ).squish
     #   # end
-    # else
-    #   render :new, notice: 'errors'
-    #   # format.html { render :new }
-    #   # format.json { render json: @review.errors, status: :unprocessable_entity }
-    # end
+    else
+      # @product = Product.find(review.product_id)
+      # @product = review.product
+      # render :new, notice: 'errors'
+      # notice: 'Errors'
+      flash.now[:notice] = 'Review not saved!'
+      # flash.now[:alert] = 'Error while sending message!'
+      # respond_to do |format|
+      #   format.html { # blahblah render }
+      # end
+
+      #   # format.html { render :new }
+      #   # format.json { render json: @review.errors, status: :unprocessable_entity }
+    end
     # # end
   end
 

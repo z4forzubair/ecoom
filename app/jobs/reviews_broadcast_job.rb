@@ -4,9 +4,9 @@ class ReviewsBroadcastJob < ApplicationJob
   def perform(review)
     # Do something later
     if review.comment_id.nil?
-      ActionCable.server.broadcast 'review', review: render_review(review), reply: 'n'
+      ActionCable.server.broadcast 'review', review: render_review(review), reply: 'n', product_id: review.product_id
     else
-      ActionCable.server.broadcast 'review', review: render_review(review), reply: 'y', comment_id: review.comment_id
+      ActionCable.server.broadcast 'review', review: render_review(review), reply: 'y', comment_id: review.comment_id, product_id: review.product_id
     end
   end
 

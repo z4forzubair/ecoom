@@ -17,10 +17,10 @@
              <span class = 'float-right'><i class="text-warning fa fa-star"></i></span>
              <span class = 'float-right'><i class="text-warning fa fa-star"></i></span>
            </p>
-           <div class = "clearfix">
+           <div class = "clearfix<%= review.product_id %>">
              <%# if review.comment.nil? %>
                 <p><%= review ? review.revcontent : '' %></p>
-              <div class = "clearfix<%= review.id %>" >
+              <div class = "clearfix<%= review.id %><%= review.product_id %>" >
                 <%# if reply == 'n'%>
                 <% unless @reviews.nil? %>
                 <% @reviews.each do |reply| %>
@@ -33,22 +33,24 @@
             <%# else %>
                  <!-- <p><%#= review ? review.revcontent : '' %></p> -->
             <%# end %>
-           <% if review.comment.nil? %>
-             <div id='reply-area'>
-               <!-- <input type="button"  value="Reply" class="float-right btn btn-outline-primary ml-2" id='show-reply'" /> -->
-               <!-- <button class='show-reply'> Reply</button> -->
-               <div id='replybtn<%= review.id%>' style="display:block">
-                 <button onclick="toggle_rev_div('replysection<%= review.id%>', 'replybtn<%= review.id%>');">Reply</button>
-               </div>
-               <br>
-               <div  class='reply-div' id='replysection<%= review.id%>' style="display:none">
-                 <%# if @review.%>
-                 <%= render partial: 'reviews/reply' , locals: { review_id: review.id, product_id: review.product_id } %>
-               </div>
-              </div>
-           <% end %>
+
          </div>
+
          </div>
+         <% if review.comment.nil? %>
+           <div id='reply-area'>
+             <!-- <input type="button"  value="Reply" class="float-right btn btn-outline-primary ml-2" id='show-reply'" /> -->
+             <!-- <button class='show-reply'> Reply</button> -->
+             <div id='replybtn<%= review.id%>' style="display:block">
+               <button onclick="toggle_rev_div('replysection<%= review.id%>', 'replybtn<%= review.id%>');">Reply</button>
+             </div>
+             <br>
+             <div  class='reply-div' id='replysection<%= review.id%>' style="display:none">
+               <%# if @review.%>
+               <%= render partial: 'reviews/reply' , locals: { review_id: review.id, product_id: review.product_id } %>
+             </div>
+            </div>
+         <% end %>
      </div>
        <div class='card card-inner reply-add' > </div>
      </div>

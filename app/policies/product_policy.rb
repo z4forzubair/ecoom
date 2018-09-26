@@ -1,5 +1,4 @@
 class ProductPolicy < ApplicationPolicy
-
   def initialize(user, product)
     @user = user
     @product = product
@@ -40,6 +39,4 @@ class ProductPolicy < ApplicationPolicy
   def destroy?
     user_logged_in? && @product.flag && @user.flag && (@user.admin? || @user.moderator?)
   end
-
-
 end

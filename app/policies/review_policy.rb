@@ -2,21 +2,34 @@ class ReviewPolicy < ApplicationPolicy
   def user_logged_in?
     !@user.nil?
   end
+
   def index?
     false
   end
+
   def new?
-    false
+    # false
+    true
   end
+
+  def show?
+    # false
+    true
+  end
+
   def edit?
     false
   end
+
   def create?
     user_logged_in? && (@user.moderator? || @user.buyer? || @user.admin?)
   end
+
   def update?
-    user_logged_in? && (@user.moderator? || @user.buyer? || @user.admin?)    # to put the validation here that a user can edit only the review that's related to him
+    user_logged_in? && (@user.moderator? || @user.buyer? || @user.admin?)
+    # to put the validation here that a user can edit only the review that's related to him
   end
+
   def delete?
     user_logged_in? && (@user.moderator? || @user.buyer? || @user.admin?)
   end

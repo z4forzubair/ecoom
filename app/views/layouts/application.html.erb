@@ -21,7 +21,9 @@
       <%= link_to "Signin", new_user_session_path %>
     <% end %>
 
-
+    <% if flash[:notice] %>
+      <p id="notice"><%= flash[:notice] %></p>
+    <% end %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
