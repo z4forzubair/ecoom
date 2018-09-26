@@ -4,10 +4,17 @@
 //= require action_cable
 //= require_self
 //= require_tree ./channels
+//
+// (function() {
+//   this.App || (this.App = {});
+//
+//   App.cable = ActionCable.createConsumer();
+//
+// }).call(this);
 
 (function() {
   this.App || (this.App = {});
 
-  App.cable = ActionCable.createConsumer();
+  App.cable = ActionCable.createConsumer($('meta[name=action-cable-url]').attr('content'));
 
 }).call(this);

@@ -5,9 +5,9 @@
       <%= label_tag(:reply)%>
       <!-- <%#= class="form-control" rows="3" text_area_tag(:review)%> -->
       <br>
-      <%= text_area_tag(:revcontent)%>
-      <%= hidden_field_tag 'product_id', @review.product.id  %>
-      <%= hidden_field_tag 'comment_id', @review.id  %>
+      <%= text_area_tag :revcontent, params[:revcontent], id: 'autocomplete' %>
+      <%= hidden_field_tag 'product_id', product_id  %>
+      <%= hidden_field_tag 'comment_id', review_id  %>
     </div>
     <%= submit_tag("Post")%>
 

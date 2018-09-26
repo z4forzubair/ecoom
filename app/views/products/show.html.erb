@@ -59,7 +59,14 @@ Email  : manirujjamanakash@gmail.com
 <% end %>
 <!-- <button onclick="toggle_rev_div('reviewsection');"> Click Here </button> -->
 <br>
-<div class = "append-div">
+<div class = "append">
+
+  <% @reviews.reverse.each do |review| %>
+    <% if review.comment_id.nil? %>
+      <%= render review %>
+    <% end %>
+  <% end %>
+    <%#= render @reviews_replies.reverse %>
 </div>
 
 <!-- saving using ajax -->

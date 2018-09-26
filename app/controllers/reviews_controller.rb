@@ -28,24 +28,38 @@ class ReviewsController < ApplicationController
   # POST /reviews
   # POST /reviews.json
   def create
-    @review = Review.new(review_params)
-    authorize @review, :user_logged_in?
-    @review.user = current_user
-    # @product = Product.find(params[:product_id]) # Not a good approach
-    authorize @review
-    if @review.save
-      respond_to do |format|
-        # format.html { redirect_to @review, notice: 'Review was successfully created.' }
-        # format.json { render :show, status: :created, location: @review }
-        # redirect_to @product, notice: 'Review was added successfully'
-        format.js
-      end
-    else
-      render :new, notice: 'errors'
-      # format.html { render :new }
-      # format.json { render json: @review.errors, status: :unprocessable_entity }
-    end
+    review = Review.create(review_params)
+
+    # ActionCable.server.broadcast 'review',
+    #                              review: ReviewsController.render(
+    #                                partial: 'reviews/review',
+    #                                locals: { review: review }
+    #                              ).squish
+    # authorize @review, :user_logged_in?
+    # review.user = current_user
+    # # @product = Product.find(params[:product_id]) # Not a good approach
+    # # authorize @review
+    # # review = @review
+    # if review.save
+    #   # respond_to do |_format|
+    #   # format.html { redirect_to @review, notice: 'Review was successfully created.' }
+    #   # format.json { render :show, status: :created, location: @review }
+    #   # redirect_to @product, notice: 'Review was added successfully'
+    #
+    #   # format.js
+    #
+    #   # ActionCable.server.broadcast 'review',
+    #   #                              review: ReviewsController.render(
+    #   #                                partial: 'review',
+    #   #                                locals: { review: @review }
+    #   #                              ).squish
+    #   # end
+    # else
+    #   render :new, notice: 'errors'
+    #   # format.html { render :new }
+    #   # format.json { render json: @review.errors, status: :unprocessable_entity }
     # end
+    # # end
   end
 
   # PATCH/PUT /reviews/1
@@ -85,6 +99,6 @@ class ReviewsController < ApplicationController
   # only allow the white list through.
   def review_params
     params.fetch(:review, {})
-    params.permit(:revcontent, :product_id, :comment_id)
+    params.permit(:revcontent, :product_id, :comment_id).merge(user: current_user)
   end
 end

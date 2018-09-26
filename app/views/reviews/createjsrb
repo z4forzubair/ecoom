@@ -1,0 +1,7 @@
+<% if review.comment_id == nil %>
+  $('#revcontent').val('');
+  $('#revcontent').focus();
+<% else %>
+  $('#autocompletereply').val('');
+  $('#autocompletereply').focus();
+<% end %>

@@ -13,6 +13,9 @@ class ProductsController < ApplicationController
   # GET /products/1.json
   def show
     authorize @product
+    # @reviews = Review.where(product_id: @product.id, comment_id: nil).last(5)
+    # @reviews_replies = Review.where(product_id: @product.id).where.not(comment_id: nil).last(5)
+    @reviews = Review.where(product_id: @product.id)
   end
 
   # GET /products/new
@@ -31,7 +34,7 @@ class ProductsController < ApplicationController
   # POST /products.json
   def create
     @product = Product.new(product_params)
-    @product.added_by_user_id=current_user.id
+    @product.added_by_user_id = current_user.id
     authorize @product
 
     respond_to do |format|
@@ -49,7 +52,7 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1.json
   def update
     authorize @product
-    @product.added_by_user_id=current_user.id
+    @product.added_by_user_id = current_user.id
     respond_to do |format|
       if @product.update(product_params)
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
@@ -75,18 +78,17 @@ class ProductsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      begin
-  			@product=Product.find(params[:id])
-  		rescue => ex
-  			redirect_to action: 'index'
-  		end
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def product_params
-       # params.fetch(:product, {})
-      params.require(:product).permit(:id, :name, :description, :price, :cost, :discount, :quantity, :added_by_user_id, :deleted_by_user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_product
+    @product = Product.find(params[:id])
+  rescue StandardError => ex
+    redirect_to action: 'index'
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def product_params
+    # params.fetch(:product, {})
+    params.require(:product).permit(:id, :name, :description, :price, :cost, :discount, :quantity, :added_by_user_id, :deleted_by_user_id)
+  end
 end

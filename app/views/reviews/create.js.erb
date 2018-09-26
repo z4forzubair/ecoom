@@ -1,10 +1,1 @@
- // Modification made in the if block only
-<% if @review.comment_id == nil %>
-<%= puts "========"*100 %>
- $('.append-div').append("<%= escape_javascript render :partial => 'review' %>");
-<% else %>
- $(document).find(".comment-parent-<%= @review.comment_id %>").find('#reply_of_comment').remove();
- // $(document).find(".comment-parent-<%= @review.comment_id %>").find('.reply-add').html("<%= escape_javascript render :partial => 'commentreply' %>");
- $(".comment-parent-<%= @review.comment_id %>").append("<%= escape_javascript render :partial => 'commentreply' %>");
 
-<% end %>
