@@ -42,6 +42,19 @@ Email  : manirujjamanakash@gmail.com
   <%= @product.cost %>
 </p>
 
+<p>
+  <%#puts("data"*50)%>
+    <%#puts(@image)%>
+<%#= image_tag @image1.image.url%>
+<%# for image in @images do %>
+    <%#= image_tag image, size: "150x150" %>
+<%# end %>
+<% @images.each do |p| %>
+  <%= image_tag p.image_url, size: "150x150"  %>
+  <%#= link_to "Edit Attachment", edit_post_attachment_path(p) %>
+<% end %>
+</p>
+
 <br>
 
 <%= form_tag({controller: "reviews", action: "create"}, method: "post", remote: :true) do %>

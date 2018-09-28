@@ -14,6 +14,10 @@ gem 'pundit'
 gem 'devise'
 #pg gem
 gem 'pg'
+# carrierwave gem
+gem 'carrierwave', '~> 1.0'
+# imagemagick minimagick gem
+gem 'mini_magick'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'

@@ -12,12 +12,11 @@ App.chat = App.cable.subscriptions.create("ReviewChannel", {
     // alert('received');
     // alert(data['reply']);
     // alert(reply);
-    if(data['reply']=='n'){
-      $('.append'+data['product_id']).prepend(data['review']);
-    }
-    else{
+    if (data['reply'] == 'n') {
+      $('.append' + data['product_id']).prepend(data['review']);
+    } else {
       // alert(data['comment_id']);
-      $('.clearfix'+data['comment_id']+data['product_id']).append(data['review']);
+      $('.clearfix' + data['comment_id'] + data['product_id']).append(data['review']);
     }
     // }
   },

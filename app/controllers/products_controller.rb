@@ -13,6 +13,9 @@ class ProductsController < ApplicationController
   # GET /products/1.json
   def show
     authorize @product
+    @images = Image.where(imageable_id: @product.id)
+    # @image1 = @image[0]
+
     # @reviews = Review.where(product_id: @product.id, comment_id: nil).last(5)
     # @reviews_replies = Review.where(product_id: @product.id).where.not(comment_id: nil).last(5)
     @reviews = Review.where(product_id: @product.id)
@@ -37,15 +40,39 @@ class ProductsController < ApplicationController
     @product.added_by_user_id = current_user.id
     authorize @product
 
-    respond_to do |format|
-      if @product.save
-        format.html { redirect_to @product, notice: 'Product was successfully created.' }
-        format.json { render :show, status: :created, location: @product }
+    # respond_to do |format|
+    if params[:images].nil?
+      @product.errors.add('Image Error:', 'No Image selected')
+      render_error
+
+      # format.html { render :new }
+      # format.json { render json: @product.errors, status: :unprocessable_entity }
+    else
+      counter = 0
+      params[:images]['image'].each do |_a| # .count
+        counter += 1
+        if counter > 5
+          @image_notice = 'Five images added, you cannot upload more than five images'
+          break
+        end
+      end
+      if @image_notice.nil?
+        if @product.save
+          save_images
+          render_error('success')
+        else
+          render_error
+          # format.html { render :new }
+          # format.json { render json: @product.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :new }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        @product.errors.add('Image Error:', 'Images cannot be more than five')
+        render_error
+        # format.html { render :new }
+        # format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
+    # end
   end
 
   # PATCH/PUT /products/1
@@ -70,7 +97,12 @@ class ProductsController < ApplicationController
     authorize @product
     # @product.deleted_by_user_id=current_user.id
     # To set the deleted_by_user_id here when updating the flag only
-    @product.destroy
+    if @product.flagged?
+      set_params
+      @product.save
+    else
+      @product.destroy
+    end
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
       format.json { head :no_content }
@@ -83,12 +115,49 @@ class ProductsController < ApplicationController
   def set_product
     @product = Product.find(params[:id])
   rescue StandardError => ex
-    redirect_to action: 'index'
+    redirect_to action: 'index', notice: 'Product not found.'
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def product_params
     # params.fetch(:product, {})
-    params.require(:product).permit(:id, :name, :description, :price, :cost, :discount, :quantity, :added_by_user_id, :deleted_by_user_id)
+    params.require(:product).permit(:name, :description, :price, :cost, :discount, :quantity, images_attributes: [:image])
+    # params.require(:image).permit(:imagevalue)
+  end
+
+  def image_params
+    params.require(:product).permit(:image)
+  end
+
+  def set_params
+    @product.quantity = 0
+    @product.deleted_by_user = current_user
+  end
+
+  def save_images
+    params[:images]['image'].each do |a|
+      @image = @product.images.create!(image: a)
+    end
+    # images = image_params
+    # images.each do |img|
+    #   @image = Image.new
+    #   @image.image = img
+    #   # @image.imagevalue = 'imagetemp'
+    #   @image.imageable_id = @product.id
+    #   @image.imageable_type = 'Product'
+    #   @image.save!
+    # end
+  end
+
+  def render_error(flag)
+    respond_to do |format|
+      if flag == 'success'
+        format.html { redirect_to @product, notice: 'Product was successfully created.' }
+        format.json { render :show, status: :created, location: @product }
+      else
+        format.html { render :new }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
+    end
   end
 end

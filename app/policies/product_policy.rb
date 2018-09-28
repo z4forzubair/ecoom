@@ -37,6 +37,6 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user_logged_in? && @product.flag && @user.flag && (@user.admin? || @user.moderator?)
+    user_logged_in? && @user.flag && (@user.admin? || @user.moderator?)
   end
 end

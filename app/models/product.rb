@@ -1,25 +1,25 @@
 class Product < ApplicationRecord
   belongs_to :assigned_by_user, class_name: 'User', foreign_key: :added_by_user_id
   belongs_to :deleted_by_user, class_name: 'User', foreign_key: :deleted_by_user_id, optional: true
-  #product_orders
+  # product_orders
   has_many :product_orders, dependent: :destroy
   has_many :orders, through: :product_orders
-  #images
+  # images
   has_many :images, as: :imageable, dependent: :destroy
-  #reviews
+  # reviews
   has_many :reviews, dependent: :destroy
-  #rating
+  # rating
   has_many :ratings, as: :rated, dependent: :destroy
-  #cart
+  # cart
   has_many :carts, dependent: :destroy
 
-  #Validations
-  before_validation :checkQuantity, on: [:create, :update, :save] # to make it after validation
+  # Validations
+  before_validation :checkQuantity, on: %i[create update save] # to make it after validation
   # before_validation :set_delete_by_user, on: [:destroy]
   validates :name, :quantity, :cost, :price, :discount, presence: true
 
-  validates :flag, inclusion: { in: [true, false] }   # to make this too after validation and function call
-  validates :flag, exclusion: { in: [nil] }   # to make this too after validation and function call
+  validates :flag, inclusion: { in: [true, false] } # to make this too after validation and function call
+  validates :flag, exclusion: { in: [nil] } # to make this too after validation and function call
 
   scope :flagged, -> { where(flag: true) }
   scope :unflagged, -> { where(flag: false) }
@@ -30,11 +30,7 @@ class Product < ApplicationRecord
   private
 
   def checkQuantity
-    if quantity == 0
-      self.flag = false
-    else
-      self.flag = true
-    end
+    self.flag = quantity != 0
   end
   # def set_assigned_by_user
   #   self.added_by_user_id=current_user.id

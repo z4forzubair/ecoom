@@ -1,33 +1,33 @@
 $('[data-toggle="collapse"]').on('click', function() {
-    var $this = $(this),
-            $parent = typeof $this.data('parent')!== 'undefined' ? $($this.data('parent')) : undefined;
-    if($parent === undefined) { /* Just toggle my  */
-        $this.find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
-        return true;
-    }
+  var $this = $(this),
+    $parent = typeof $this.data('parent') !== 'undefined' ? $($this.data('parent')) : undefined;
+  if ($parent === undefined) { /* Just toggle my  */
+    $this.find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+    return true;
+  }
 
-    /* Open element will be close if parent !== undefined */
-    var currentIcon = $this.find('.glyphicon');
-    currentIcon.toggleClass('glyphicon-plus glyphicon-minus');
-    $parent.find('.glyphicon').not(currentIcon).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+  /* Open element will be close if parent !== undefined */
+  var currentIcon = $this.find('.glyphicon');
+  currentIcon.toggleClass('glyphicon-plus glyphicon-minus');
+  $parent.find('.glyphicon').not(currentIcon).removeClass('glyphicon-minus').addClass('glyphicon-plus');
 
 });
 
-function toggle_rev_div(id, btnid){
+function toggle_rev_div(id, btnid) {
   hide_show_div(id);
   hide_show_div(btnid);
 }
 
-function hide_show_div(id){
+function hide_show_div(id) {
   var divelement = document.getElementById(id);
-  if(divelement.style.display == 'none')
+  if (divelement.style.display == 'none')
     divelement.style.display = 'block';
-    else {
-      divelement.style.display = 'none';
-    }
+  else {
+    divelement.style.display = 'none';
+  }
 }
 
-function clear_text(id){
+function clear_text(id) {
   var area_element = document.getElementById(id);
   area_element.val('');
 }

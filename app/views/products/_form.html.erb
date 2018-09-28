@@ -42,6 +42,12 @@
           <%= form.text_field :discount, value: 0 %>
         </p>
 
+        <div>
+          <%= form.label :image %>
+          <%= form.file_field :image, multiple: true, name: "images[image][]" %>
+        </div>
+    <br>
+
   <div class="actions">
     <%= form.submit %>
   </div>
