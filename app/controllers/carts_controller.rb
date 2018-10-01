@@ -41,49 +41,16 @@ class CartsController < ApplicationController
   # POST /carts
   # POST /carts.json
   def create
-    @cart = Cart.new(cart_params)
-    authorize @cart, :user_logged_in?
-    @quantity = params[:quantity]
-    @quantity = @quantity.to_i
-    if @quantity < 1
-      redirect_to products_path, notice: 'Enter a valid number of items!'
+    @cart = CartServices.build_cart(cart_params)
+    authorize @cart
+    @notice = CartServices.verify_quantity
+    if @notice == 'update'
+      update
+    elsif @notice == 'no error found'
+      @notice = CartServices.create_cart
+      render_alert(@notice)
     else
-      @productTemp = Product.find(params[:product_id])
-      # crt=@cart.where("product_id=?", product.id).first
-      @cart = Cart.where(product_id: @productTemp.id, user_id: current_user.id).first
-      if @cart.nil?
-        @cart = Cart.new
-        @cart.product_id = @productTemp.id
-        @cart.user_id = current_user.id
-        @cart.quantity = @quantity
-        authorize @cart
-        if @productTemp.quantity.nil? || @productTemp.flag == false
-          redirect_to products_path, notice: 'Product not available'
-        elsif @cart.quantity.nil?
-          redirect_to products_path, notice: 'Cart quantity cannot be added'
-        elsif @cart.quantity > @productTemp.quantity
-          redirect_to products_path, notice: "Available is only #{@productTemp.quantity}"
-        else
-
-          # respond_to do |format|
-          if @cart.save
-            # format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
-            # format.json { render :show, status: :created, location: @cart }
-            # format.html { redirect_to controller: 'products', notice: 'Cart was successfully created.' }
-            # format.json { render :index, status: :created, location: 'products' }
-            # redirect_to action: 'index', controller: 'products'
-            redirect_to products_path, notice: 'Cart was added successfully'
-            # redirect_to :controller => 'products', :action => 'index'
-          else
-            render :new, notice: 'errors'
-            # format.html { render :new }
-            # format.json { render json: @cart.errors, status: :unprocessable_entity }
-          end
-        end
-        # end
-      else
-        update
-      end
+      render_alert(@notice)
     end
   end
 
@@ -142,6 +109,10 @@ class CartsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def cart_params
     params.fetch(:cart, {}) # it is a hash for avoiding null array
-    params.permit(:product_id, :quantity)
+    params.permit(:product_id, :quantity).merge(user: current_user)
+  end
+
+  def render_alert(notice)
+    redirect_to products_path, notice: notice
   end
 end
