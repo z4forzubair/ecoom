@@ -19,7 +19,8 @@ class OrdersController < ApplicationController
     @auth_order = Order.new
     authorize @auth_order
     # @ordered = Cart.where(user_id: current_user.id, id:)
-    @order = $carts
+    @carts = Cart.where(user_id: current_user.id)
+    @order = @carts
     # @order = Cart.where(user_id: current_user.id)
     # authorize @order    # it is calling carts#new    !!!!!!!!!!!!!
   end
@@ -96,7 +97,7 @@ class OrdersController < ApplicationController
   def evaluate_order
     @order.user_id = current_user.id
     # @cart=Cart.where(user_id: current_user.id)
-    @cart = $carts
+    @carts = Cart.where(user_id: current_user.id)
     @order.no_of_products = @cart.count
     # finding total price and discount
     totalDiscount = totalAmount = 0

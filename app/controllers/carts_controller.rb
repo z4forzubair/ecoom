@@ -6,8 +6,8 @@ class CartsController < ApplicationController
   def index
     @carts = Cart.new
     authorize @carts, :user_logged_in?
-    $carts = Cart.where(user_id: current_user.id)
-    $carts.each do |c|
+    @carts = Cart.where(user_id: current_user.id)
+    @carts.each do |c|
       if c.product.flag == false
         c.destroy
       else
@@ -17,7 +17,6 @@ class CartsController < ApplicationController
         end
       end
     end
-    @carts = $carts
     authorize @carts
   end
 
@@ -43,7 +42,7 @@ class CartsController < ApplicationController
   def create
     @cart = CartServices.build_cart(cart_params)
     authorize @cart
-    @notice = CartServices.verify_quantity
+    @notice = CartServices.verify_quantity_in_create
     if @notice == 'update'
       update
     elsif @notice == 'no error found'
@@ -56,35 +55,16 @@ class CartsController < ApplicationController
 
   # PATCH/PUT /carts/1
   # PATCH/PUT /carts/1.json
+  # it updates the cart only when called through the create controller
   def update
+    @cart = CartServices.get_cart
     authorize @cart
-    @old_quantity = @cart.quantity
-    @cart.quantity = @old_quantity + @quantity
-
-    if @old_quantity > @productTemp.quantity
-      @cart.quantity = @productTemp.quantity
-      if @cart.update(cart_params)
-        # format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
-        # format.json { render :show, status: :ok, location: @cart }
-        redirect_to products_path, notice: "You cannot add more items, Quantity available is #{@cart.quantity}"
-      else
-        # format.html { render :edit }
-        # format.json { render json: @cart.errors, status: :unprocessable_entity }
-        render :new, notice: 'errors'
-      end
-    elsif @cart.quantity > @productTemp.quantity
-      redirect_to products_path, notice: "Product not available, you already have added #{@old_quantity} items. Only #{@productTemp.quantity - @old_quantity} more items are available."
+    @notice = CartServices.verify_quantity_in_update
+    if @notice == 'product_quantity' || @notice == 'update'
+      @notice = CartServices.update_cart
+      render_alert(@notice)
     else
-      # respond_to do |format|
-      if @cart.update(cart_params)
-        # format.html { redirect_to @cart, notice: 'Cart was successfully updated.' }
-        # format.json { render :show, status: :ok, location: @cart }
-        redirect_to products_path, notice: "Cart updated successfully, new quantity available is #{@cart.quantity}"
-      else
-        # format.html { render :edit }
-        # format.json { render json: @cart.errors, status: :unprocessable_entity }
-        render :new, notice: 'errors'
-      end
+      render_alert(@notice)
     end
   end
 
