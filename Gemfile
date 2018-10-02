@@ -18,6 +18,8 @@ gem 'pg'
 gem 'carrierwave', '~> 1.0'
 # imagemagick minimagick gem
 gem 'mini_magick'
+# audited gem
+gem "audited", "~> 4.7"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'

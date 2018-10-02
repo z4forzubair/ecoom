@@ -17,6 +17,12 @@ Email  : manirujjamanakash@gmail.com
 
 <div class="container">
   <div class="post-comments">
+    <p>
+      <h3>
+      User:
+      <i><%= @product.audits.last.user.first_name%> </i>
+    </h3>
+    </p>
 <p>
   <strong>Name:</strong>
   <%= @product.name %>
@@ -55,6 +61,7 @@ Email  : manirujjamanakash@gmail.com
 <% end %>
 </p>
 
+<br>
 <br>
 
 <%= form_tag({controller: "reviews", action: "create"}, method: "post", remote: :true) do %>
