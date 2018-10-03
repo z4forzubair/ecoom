@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   # Associations
   # has_many :products
+
+  # to remove the below two lines
   has_many :assigned_by_user, class_name: 'Product', foreign_key: :added_by_user_id
   has_many :deleted_by_user, class_name: 'Product', foreign_key: :deleted_by_user_id
   # orders

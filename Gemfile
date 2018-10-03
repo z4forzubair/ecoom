@@ -20,6 +20,12 @@ gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 # audited gem
 gem "audited", "~> 4.7"
+# omniauth gem
+gem 'omniauth'
+# omniauth google gem
+gem 'omniauth-google-oauth2'
+# omniauth-twitter gem
+# gem 'omniauth-twitter'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
